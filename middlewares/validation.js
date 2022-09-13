@@ -1,6 +1,13 @@
 const { celebrate, Joi } = require('celebrate');
+const isURL = require('validator/lib/isURL');
+const { INVALID_URL } = require('../errors/errors');
 
-const regex = /^https?:\/\/(www\.)?[a-zA-Z0-9\-.]{1,}\.[a-zA-Z]{1,4}[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=]{1,}/;
+const url = (value, helpers) => {
+  if (isURL(value)) {
+    return value;
+  }
+  return helpers.message(INVALID_URL);
+};
 
 const validateSignup = celebrate({
   body: Joi.object().keys({
@@ -31,9 +38,9 @@ const validateCreateMovie = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().pattern(regex),
-    trailerLink: Joi.string().required().pattern(regex),
-    thumbnail: Joi.string().required().pattern(regex),
+    image: Joi.string().required().custom(url),
+    trailerLink: Joi.string().required().custom(url),
+    thumbnail: Joi.string().required().custom(url),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
