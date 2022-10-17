@@ -6,7 +6,7 @@ const url = (value, helpers) => {
   if (isURL(value)) {
     return value;
   }
-  return helpers.message(INVALID_URL);
+  return '';
 };
 
 const validateSignup = celebrate({
@@ -33,17 +33,17 @@ const validateUpdateUserInfo = celebrate({
 
 const validateCreateMovie = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required(),
-    director: Joi.string().required(),
-    duration: Joi.number().required(),
-    year: Joi.string().required(),
-    description: Joi.string().required(),
+    country: Joi.string().required().default("Неизвестна"),
+    director: Joi.string().required().default("Неизвестен"),
+    duration: Joi.number().required().default("Неизвестна"),
+    year: Joi.string().required().default("Незивестен"),
+    description: Joi.string().required().default("Отсутствтует"),
     image: Joi.string().required().custom(url),
     trailerLink: Joi.string().required().custom(url),
     thumbnail: Joi.string().required().custom(url),
     movieId: Joi.number().required(),
-    nameRU: Joi.string().required(),
-    nameEN: Joi.string().required(),
+    nameRU: Joi.string().required().default("Отсутствует"),
+    nameEN: Joi.string().required().default("Отсутствует"),
   }),
 });
 
